@@ -1,0 +1,14 @@
+# Nix
+result
+.direnv
+
+# Docker
+.dockerignore
+
+# Nextflow
+.nextflow*
+work/
+
+# Common
+.DS_Store
+*.log
