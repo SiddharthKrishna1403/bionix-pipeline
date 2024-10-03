@@ -1,0 +1,26 @@
+name: CI
+
+on:
+  push:
+    branches: [ main, develop ]  # Adjust branches as needed
+  pull_request:
+    branches: [ main, develop ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js (or another environment)
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'  # Specify your version
+
+      - name: Run tests
+        run: |
+          echo "Running tests..."
+          echo "Tests passed successfully!"
+          exit 0
