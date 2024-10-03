@@ -17,3 +17,6 @@ WORKDIR /app
 
 # Initialize Nix flake
 RUN nix --experimental-features 'nix-command flakes' develop
+
+# Set the default command
+CMD ["/bin/sh"]
