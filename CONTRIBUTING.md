@@ -1,6 +1,10 @@
 # Contributing Guidelines
 
 
+## TO BE REVISED
+
+
+
 ## Branching Strategy
 
 This project uses a modified GitFlow branching strategy:
