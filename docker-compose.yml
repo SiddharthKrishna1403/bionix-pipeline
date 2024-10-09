@@ -1,8 +1,7 @@
 
-
 services:
   bionix-pipeline:
-    build:
+    build: 
       context: .
       dockerfile: Dockerfile
       args:
@@ -12,7 +11,12 @@ services:
       - .:/app
       - nix-store:/nix
     working_dir: /app
-    command: sleep infinity  # This keeps the container running
+    command: tail -f /dev/null  # This will keep the container running
+    tty: true
+    stdin_open: true
+
+volumes:
+  nix-store:    
 
 volumes:
   nix-store:
