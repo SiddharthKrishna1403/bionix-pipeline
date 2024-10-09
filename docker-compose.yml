@@ -17,6 +17,3 @@ services:
 
 volumes:
   nix-store:    
-
-volumes:
-  nix-store:
