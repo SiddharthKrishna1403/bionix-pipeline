@@ -32,7 +32,10 @@ jobs:
         push: false
         load: true
         tags: bionix-pipeline:0.1.0
-
+    
     - name: Run tests in Docker container
       run: |
-        docker run --rm bionix-pipeline:0.1.0 nix --experimental-features "nix-command flakes" develop -c echo "Running bionix-pipeline tests in container..." && figlet "bionix-pipeline" | lolcat
+        docker run --rm bionix-pipeline:0.1.0 nix --experimental-features "nix-command flakes" develop -c bash -c '
+          echo "Running bionix-pipeline tests in container..."
+          figlet "bionix-pipeline" | lolcat
+          echo "Try running: figlet '"'"'Your text here'"'"' | lolcat"
