@@ -2,25 +2,37 @@ name: CI
 
 on:
   push:
-    branches: [ main, develop ]  # Adjust branches as needed
+    branches: [ main ]
   pull_request:
-    branches: [ main, develop ]
+    branches: [ main ]
 
 jobs:
-  build:
-    runs-on: ubuntu-latest
-
+  build-and-test:
+    runs-on: ubuntu-22.04
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
+    - uses: actions/checkout@v3.5.3
 
-      - name: Set up Node.js (or another environment)
-        uses: actions/setup-node@v4
-        with:
-          node-version: '20'  # Specify your version
+    - name: Install Nix
+      uses: cachix/install-nix-action@v22
+      with:
+        nix_path: nixpkgs=channel:nixos-23.05
 
-      - name: Run tests
-        run: |
-          echo "Running tests..."
-          echo "Tests passed successfully!"
-          exit 0
+    - name: Build and test with Nix
+      run: |
+        nix --experimental-features "nix-command flakes" develop -c echo "Building and testing bionix-pipeline..."
+        nix --experimental-features "nix-command flakes" develop -c figlet "bionix-pipeline" | lolcat
+
+    - name: Set up Docker Buildx
+      uses: docker/setup-buildx-action@v2.9.1
+
+    - name: Build Docker image
+      uses: docker/build-push-action@v4.1.1
+      with:
+        context: .
+        push: false
+        load: true
+        tags: bionix-pipeline:0.1.0
+
+    - name: Run tests in Docker container
+      run: |
+        docker run --rm bionix-pipeline:0.1.0 nix --experimental-features "nix-command flakes" develop -c echo "Running bionix-pipeline tests in container..." && figlet "bionix-pipeline" | lolcat

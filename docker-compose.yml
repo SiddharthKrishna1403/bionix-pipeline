@@ -1,0 +1,16 @@
+version: '3.8'
+
+services:
+  bionix-pipeline:
+    build: 
+      context: .
+      dockerfile: Dockerfile
+    image: bionix-pipeline:0.1.0
+    volumes:
+      - .:/app
+      - nix-store:/nix
+    working_dir: /app
+    command: /bin/sh -c "nix --experimental-features 'nix-command flakes' develop"
+
+volumes:
+  nix-store:
