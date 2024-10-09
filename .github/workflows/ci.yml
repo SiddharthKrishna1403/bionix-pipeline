@@ -15,15 +15,19 @@ jobs:
     - name: Set up Docker Buildx
       uses: docker/setup-buildx-action@v3
 
+
     - name: Build and run tests
       run: |
-        docker-compose build
-        docker-compose up -d
-        docker-compose exec -T bionix-pipeline enter-nix-shell -c "
-          echo 'Running tests...' &&
-          figlet 'bionix-pipeline' | lolcat &&
-          echo 'Add your test commands here'
+        docker compose build
+        docker compose up -d
+        docker compose exec -T bionix-pipeline /bin/sh -c "
+          chmod +x /usr/local/bin/enter-nix-shell &&
+          enter-nix-shell -c '
+            echo \"Running tests...\" &&
+            figlet \"bionix-pipeline\" | lolcat &&
+            echo \"Add your test commands here\"
+          '
         "
 
     - name: Cleanup
-      run: docker-compose down
+      run: docker compose down
