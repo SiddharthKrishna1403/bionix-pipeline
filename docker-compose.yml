@@ -1,16 +1,19 @@
 version: '3.8'
 
+
 services:
   bionix-pipeline:
-    build: 
+    build:
       context: .
       dockerfile: Dockerfile
+      args:
+        NIX_VERSION: 2.13.3
     image: bionix-pipeline:0.1.0
     volumes:
       - .:/app
       - nix-store:/nix
     working_dir: /app
-    command: /bin/sh -c "nix --experimental-features 'nix-command flakes' develop"
+    command: sleep infinity  # This keeps the container running
 
 volumes:
   nix-store:

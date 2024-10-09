@@ -7,35 +7,23 @@ on:
     branches: [ main ]
 
 jobs:
-  build-and-test:
+  test:
     runs-on: ubuntu-22.04
     steps:
     - uses: actions/checkout@v4
 
-    - name: Install Nix
-      uses: cachix/install-nix-action@v22
-      with:
-        nix_path: nixpkgs=channel:nixos-23.05
-
-    - name: Build and test with Nix
-      run: |
-        nix --experimental-features "nix-command flakes" develop -c echo "Building and testing bionix-pipeline..."
-        nix --experimental-features "nix-command flakes" develop -c figlet "bionix-pipeline" | lolcat
-
     - name: Set up Docker Buildx
       uses: docker/setup-buildx-action@v2.9.1
 
-    - name: Build Docker image
-      uses: docker/build-push-action@v4.1.1
-      with:
-        context: .
-        push: false
-        load: true
-        tags: bionix-pipeline:0.1.0
-    
-    - name: Run tests in Docker container
+    - name: Build and run tests
       run: |
-        docker run --rm bionix-pipeline:0.1.0 nix --experimental-features "nix-command flakes" develop -c bash -c '
-          echo "Running bionix-pipeline tests in container..."
-          figlet "bionix-pipeline" | lolcat
-          echo "Try running: figlet '"'"'Your text here'"'"' | lolcat"
+        docker-compose build
+        docker-compose up -d
+        docker-compose exec -T bionix-pipeline enter-nix-shell -c "
+          echo 'Running tests...' &&
+          figlet 'bionix-pipeline' | lolcat &&
+          echo 'Add your test commands here'
+        "
+
+    - name: Cleanup
+      run: docker-compose down
