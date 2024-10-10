@@ -16,4 +16,4 @@ RUN mkdir -p /usr/local/bin && \
 RUN echo '#!/bin/sh \n NIX_SHELL_PRESERVE_PROMPT=1 exec nix --experimental-features "nix-command flakes" develop "$@"' > /usr/local/bin/enter-nix-shell && \
     chmod +x /usr/local/bin/enter-nix-shell
 
-ENTRYPOINT ["/bin/sh"]
+    ENTRYPOINT ["/bin/sh", "-c", "NIX_SHELL_PRESERVE_PROMPT=1 exec nix --experimental-features 'nix-command flakes' develop \"$@\""]
