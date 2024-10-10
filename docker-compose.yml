@@ -11,9 +11,9 @@ services:
       - .:/app
       - nix-store:/nix
     working_dir: /app
-    command: tail -f /dev/null  # This will keep the container running
     tty: true
     stdin_open: true
+    command: -c "echo 'Hello, World!' && /bin/sh"
 
 volumes:
-  nix-store:    
+  nix-store:
