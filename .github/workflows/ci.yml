@@ -22,7 +22,7 @@ jobs:
         docker compose up -d
         docker compose exec -T bionix-pipeline /bin/sh -c "
           chmod +x /usr/local/bin/enter-nix-shell &&
-          enter-nix-shell -c '
+          /usr/local/bin/enter-nix-shell -c '
             echo \"Running tests...\" &&
             figlet \"bionix-pipeline\" | lolcat &&
             echo \"Add your test commands here\"
