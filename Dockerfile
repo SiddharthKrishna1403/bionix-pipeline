@@ -8,7 +8,7 @@ COPY flake.nix flake.lock ./
 RUN nix --experimental-features "nix-command flakes" build --no-link .#devShells.x86_64-linux.default
 
 # Install coreutils to ensure tail is available
-RUN nix-env -iA nixpkgs.coreutilsS
+RUN nix-env -iA nixpkgs.coreutils
 
 # Create /usr/local/bin directory and set permissions
 RUN mkdir -p /usr/local/bin && \
