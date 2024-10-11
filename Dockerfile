@@ -5,10 +5,8 @@ WORKDIR /app
 
 COPY flake.nix flake.lock ./
 
-RUN nix --experimental-features "nix-command flakes" build --no-link .#devShells.x86_64-linux.default
-
-# Install coreutils to ensure tail is available
-RUN nix-env -iA nixpkgs.coreutils
+# Install coreutils and other necessary tools using nix-shell
+RUN nix-shell -p coreutils --run "cp $(which tail) /usr/local/bin/tail && cp $(which sed) /usr/local/bin/sed"
 
 # Create /usr/local/bin directory and set permissions
 RUN mkdir -p /usr/local/bin && \
