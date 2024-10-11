@@ -7,6 +7,8 @@ COPY flake.nix flake.lock ./
 
 RUN nix --experimental-features "nix-command flakes" build --no-link .#devShells.x86_64-linux.default
 
+# Install coreutils to ensure tail is available
+RUN nix-env -iA nixpkgs.coreutils
 
 # Create /usr/local/bin directory and set permissions
 RUN mkdir -p /usr/local/bin && \
@@ -16,4 +18,5 @@ RUN mkdir -p /usr/local/bin && \
 RUN echo '#!/bin/sh \n NIX_SHELL_PRESERVE_PROMPT=1 exec nix --experimental-features "nix-command flakes" develop "$@"' > /usr/local/bin/enter-nix-shell && \
     chmod +x /usr/local/bin/enter-nix-shell
 
-    ENTRYPOINT ["/bin/sh", "-c", "NIX_SHELL_PRESERVE_PROMPT=1 exec nix --experimental-features 'nix-command flakes' develop \"$@\""]
+# Ensure the container stays running
+CMD ["tail", "-f", "/dev/null"]
