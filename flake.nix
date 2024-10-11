@@ -27,6 +27,24 @@
             echo "Try running: figlet 'Your text here' | lolcat"
           '';
         };
+
+        packages.default = pkgs.dockerTools.buildImage {
+          name = "bionix-pipeline";
+          tag = "latest";
+          contents = pkgs.buildEnv {
+            name = "bionix-pipeline-env";
+            paths = [
+              pkgs.coreutils
+              pkgs.figlet
+              pkgs.lolcat
+              pkgs.git
+              pkgs.gnumake
+            ];
+          };
+          config = {
+            Cmd = [ "sh" ];
+          };
+        };
       }
     );
 }
