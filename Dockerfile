@@ -10,7 +10,7 @@ RUN mkdir -p /usr/local/bin && \
     chmod 755 /usr/local/bin
 
 # Install coreutils and other necessary tools using nix-shell
-RUN nix-shell -p coreutils --run "cp $(which tail) /usr/local/bin/tail && cp $(which sed) /usr/local/bin/sed"
+RUN nix-shell -p coreutils 
 
 # Create a script to enter the Nix shell
 RUN echo '#!/bin/sh\nNIX_SHELL_PRESERVE_PROMPT=1 exec nix --experimental-features "nix-command flakes" develop "$@"' > /usr/local/bin/enter-nix-shell && \
