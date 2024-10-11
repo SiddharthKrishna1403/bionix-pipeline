@@ -15,7 +15,7 @@ RUN mkdir -p /usr/local/bin && \
     chmod 755 /usr/local/bin
 
 # Create a script to enter the Nix shell
-RUN echo '#!/bin/sh \n NIX_SHELL_PRESERVE_PROMPT=1 exec nix --experimental-features "nix-command flakes" develop "$@"' > /usr/local/bin/enter-nix-shell && \
+RUN echo '#!/bin/sh\nNIX_SHELL_PRESERVE_PROMPT=1 exec nix --experimental-features "nix-command flakes" develop "$@"' > /usr/local/bin/enter-nix-shell && \
     chmod +x /usr/local/bin/enter-nix-shell
 
 # Ensure the container stays running
