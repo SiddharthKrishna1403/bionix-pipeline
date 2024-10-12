@@ -19,6 +19,7 @@
             lolcat
             git
             gnumake
+            nix 
           ];
 
           shellHook = ''
